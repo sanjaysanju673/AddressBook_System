@@ -3,24 +3,23 @@
     @Date: 08-09-2024
     @Last Modified by: V Sanjay Kumar
     @Last Modified: 08-09-2024
-    @Title: UC-3 updating the contact existing contact.
+    @Title : UC-5 Ability to add multiple person to Address Book
 '''
-
 class Contact:
     # Represents a contact in the address book.
     def __init__(self, first_name, last_name, address, city, state, zip_code, phone_number, email):
         self.first_name = first_name
         self.last_name = last_name
         self.address = address
-        self.city = city
-        self.state = state
+        self.city = city 
+        self.state = state 
         self.zip_code = zip_code
         self.phone_number = phone_number
         self.email = email
 
     def display_contact(self):
         """
-        Definition: Displays the contact details.
+        Definition: Display the details
         parameter: None
         Return: Returns a formatted string of the contact's details.
         """
@@ -34,9 +33,9 @@ class Contact:
 
 def check_integer_input(prompt):
     """
-    Definition: Prompts the user for an integer input.
-    parameter: None
-    Return: Returns the integer value.
+        Definition: Prompts the user for an integer input 
+        parameter: None
+        Return: returns the integer value.
     """
     while True:
         try:
@@ -49,18 +48,36 @@ class AddressBook:
         self.name = name
         self.contacts = {}
 
-    def add_contact(self, contact):
+    def add_or_update_contact(self, contact):
         """
-        Definition: Adds a new contact to the address book.
-        parameter: contact (Contact) - The contact object.
+        Definition: Adds or updates a contact in the address book.
+        If the contact with the given first name exists, update the contact details. Otherwise, add a new contact.
+        parameter: contact (Contact) - The contact object with details.
         Return: None
         """
+        if contact.first_name in self.contacts:
+            print(f"Contact with first name '{contact.first_name}' already exists. Updating contact.")
+        else:
+            print(f"Adding new contact for '{contact.first_name}'.")
+
         self.contacts[contact.first_name] = contact
-        print("Contact added successfully.")
+        print("Contact saved successfully.")
+
+    def display_all_contacts(self):
+        """
+        Definition: Displays all contacts in the address book.
+        parameter: None
+        Return: None
+        """
+        if not self.contacts:
+            print("No contacts in address book.")
+        else:
+            for contact in self.contacts.values():
+                print(contact.display_contact())
 
     def edit_contact(self, first_name):
         """
-        Definition: Edits an existing contact's details in the address book using the first name.
+        Definition: Edits an existing contact in the address book.
         parameter: first_name (str) - The first name of the contact to edit.
         Return: None
         """
@@ -78,42 +95,70 @@ class AddressBook:
             print("Contact updated successfully.")
         else:
             print("Contact not found.")
+            
+    def delete_contact(self, first_name):
+        """
+        Definition: Deletes an existing contact in the address book.
+        parameter: first_name (str) - The first name of the contact to delete.
+        Return: None
+        """
+        if first_name in self.contacts:
+            del self.contacts[first_name]
+            print(f"Contact '{first_name}' deleted successfully.")
+        else:
+            print("Contact not found.")
 
-# Collecting user input
-print("Enter contact details:")
-first_name = input("First Name: ")
-last_name = input("Last Name: ")
-address = input("Address: ")
-city = input("City: ")
-state = input("State: ")
-zip_code = check_integer_input("ZIP Code: ")
-phone_number = check_integer_input("Phone Number: ")
-email = input("Email: ")
+def main_menu():
+    address_book = AddressBook(name="MyAddressBook")
+    while True:
+        print("\nAddress Book Menu:")
+        print("1. Add or Update Contact")
+        print("2. Display All Contacts")
+        print("3. Edit Contact")
+        print("4. Delete the contact")
+        print("5. Exit")
+        choice = input("Enter your choice: ")
 
-# Creating a Contact object with the user-provided details
-contact = Contact(
-    first_name=first_name,
-    last_name=last_name,
-    address=address,
-    city=city,
-    state=state,
-    zip_code=zip_code,
-    phone_number=phone_number,
-    email=email
-)
+        if choice == '1':
+            print("Enter contact details:")
+            first_name = input("First Name: ")
+            last_name = input("Last Name: ")
+            address = input("Address: ")
+            city = input("City: ")
+            state = input("State: ")
+            zip_code = check_integer_input("ZIP Code: ")
+            phone_number = check_integer_input("Phone Number: ")
+            email = input("Email: ")
 
-# Creating the AddressBook and adding the contact
-address_book = AddressBook(name="MyAddressBook")
-address_book.add_contact(contact)
+            contact = Contact(
+                first_name=first_name,
+                last_name=last_name,
+                address=address,
+                city=city,
+                state=state, 
+                zip_code=zip_code,     
+                phone_number=phone_number,
+                email=email
+            )
+            address_book.add_or_update_contact(contact)
 
-# Displaying the contact details
-print("\n--------------Contact Details:---------------")
-print(contact.display_contact())
+        elif choice == '2':
+            address_book.display_all_contacts()
 
-# Editing the contact
-first_name_to_edit = input("Enter the first name of the contact to edit: ")
-address_book.edit_contact(first_name_to_edit)
+        elif choice == '3':
+            first_name = input("Enter the first name of the contact to edit: ")
+            address_book.edit_contact(first_name)
+        
+        elif choice == '4':
+            first_name = input("Enter the first name of the contact to delete: ")
+            address_book.delete_contact(first_name)
 
-# Displaying the updated contact details
-print("\n--------------Updated Contact Details:---------------")
-print(contact.display_contact())
+        elif choice == '5':
+            print("Exiting the program.")
+            break
+
+        else:
+            print("Invalid choice. Please try again.")
+
+if __name__ == "__main__":
+    main_menu()
