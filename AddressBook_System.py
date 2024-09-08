@@ -71,6 +71,27 @@ contact = Contact(
     email=email
 )
 
+class AddressBook:
+    def __init__(self, name):
+        self.name = name
+        self.contacts = {}
+
+    def add_contact(self, contact):
+        """
+        
+        Definition:Adds a new contact to the address book.
+        
+        parameter:contact details
+        
+        Return:None
+        
+        """
+        self.contacts[contact.first_name] = contact
+        print("Contact added successfully.")
+
+#
+address_book = AddressBook(name="MyAddressBook")
+address_book.add_contact(contact)
 # Displaying the contact details
 print("\n--------------Contact Details:---------------")
 print(contact.display_contact())
