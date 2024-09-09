@@ -3,7 +3,7 @@
     @Date: 08-09-2024
     @Last Modified by: V Sanjay Kumar
     @Last Modified: 08-09-2024
-    @Title : UC-6 Refactor to add multiple Address Book to the System. Each Address Book has a unique Name
+    @Title : UC-7 Ability to ensure there is no Duplicate Entry of the same Person in a particular Address Book"
 
 '''
 class Contact:
