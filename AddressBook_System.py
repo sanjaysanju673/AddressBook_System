@@ -48,8 +48,7 @@ class AddressBook:
     def __init__(self, name):
         self.name = name
         self.contacts = {}
-        self.addressbook ={}
-    
+
     def add_or_update_contact(self, contact):
         """
         Definition: Adds or updates a contact in the address book.
@@ -65,6 +64,7 @@ class AddressBook:
         self.contacts[contact.first_name] = contact
         print("Contact saved successfully.")
 
+
     def display_all_contacts(self):
         """
         Definition: Displays all contacts in the address book.
@@ -77,6 +77,7 @@ class AddressBook:
             for contact in self.contacts.values():
                 print('-'*30)
                 print(contact.display_contact())
+          
                 
     def edit_contact(self, first_name):
         """
