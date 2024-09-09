@@ -178,7 +178,7 @@ def main_menu():
                     sub_choice = input("Enter your choice: ")
 
                     if sub_choice == '1':
-                        print("Enter contact details:")
+                        print('-'*12,"Enter contact details:","-"*12)
                         first_name = input("First Name: ")
                         last_name = input("Last Name: ")
                         address = input("Address: ")
