@@ -3,7 +3,7 @@
     @Date: 08-09-2024
     @Last Modified by: V Sanjay Kumar
     @Last Modified: 08-09-2024
-    @Title : UC-7 Ability to ensure there is no Duplicate Entry of the same Person in a particular Address Book"
+    @Title : UC-8 Ability to search Person in a City or State across the multiple AddressBook.
 
 '''
 class Contact:
@@ -130,6 +130,11 @@ class AddressBookSystem:
         self.address_books = {}
 
     def add_address_book(self, name):
+        """
+        Definition: Adds or updates a address book name in the addressbook System.
+        parameter: address_book (Adress_book) - The addressbook object .
+        Return: None
+        """
         if name in self.address_books:
             print(f"Address book with name '{name}' already exists.")
         else:
@@ -146,7 +151,24 @@ class AddressBookSystem:
             print("Available Address Books:")
             for name in self.address_books:
                 print(f"- {name}")
-
+    def search_contact_by_city_or_state(self, search_term, search_type):
+        """
+        Definition: Searches for contacts by city or state across all address books.
+        Parameters:
+            search_term (str): The city or state to search for.
+            search_type (str): Type of search ('city' or 'state').
+        Returns: None
+        """
+        found = False
+        for book_name, address_book in self.address_books.items():
+            for contact in address_book.contacts.values():
+                if (search_type == 'city' and contact.city.lower() == search_term.lower()) or \
+                   (search_type == 'state' and contact.state.lower() == search_term.lower()):
+                    print(f"\nFound in Address Book: {book_name}")
+                    print(contact.display_contact())
+                    found = True
+        if not found:
+            print(f"No contacts found in {search_type.capitalize()} '{search_term}' across all address books.")
 
 
 def main_menu():
@@ -156,7 +178,9 @@ def main_menu():
         print("1. Create a new Address Book")
         print("2. Select an Address Book")
         print("3. Display all Address Books")
-        print("4. Exit")
+        print("4. Search Contact by City")
+        print("5. Search Contact by State")
+        print("6. Exit")
         choice = input("Enter your choice: ")
 
         if choice == '1':
@@ -222,7 +246,15 @@ def main_menu():
         elif choice == '3':
             system.display_all_address_books()
 
+        
         elif choice == '4':
+            search_term = input("Enter the city to search for: ")
+            system.search_contact_by_city_or_state(search_term, 'city')
+
+        elif choice == '5':
+            search_term = input("Enter the state to search for: ")
+            system.search_contact_by_city_or_state(search_term, 'state')
+        elif choice == '6':
             print("Exiting the program.")
             break
 
