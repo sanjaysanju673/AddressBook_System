@@ -4,7 +4,7 @@
     @Date: 08-09-2024
     @Last Modified by: V Sanjay Kumar
     @Last Modified: 08-09-2024
-    @Title : UC-11 Ability to sort by the name in AddressBook.
+    @Title : UC-12 Ability to sort by the name,city,state,zipcode in AddressBook.
 
 '''
 class Contact:
@@ -127,20 +127,19 @@ class AddressBook:
             print("Contact not found.")
     
 
-    def sort_contacts_by_name(self, sort_by="first_name"):
+    def sort_contacts(self, sort_by="first_name"):
         """
-        Definition: Sorts the contacts by first name or last name.
+        Definition: Sorts the contacts by first name, last name, city, state, or zip code.
         Parameters:
-            sort_by (str): Either 'first_name' or 'last_name'. Defaults to 'first_name'.
+            sort_by (str): Can be 'first_name', 'last_name', 'city', 'state', or 'zip_code'. Defaults to 'first_name'.
         Return: None
         """
-        if sort_by not in ["first_name", "last_name"]:
-            print("Invalid sort criteria. Please choose 'first_name' or 'last_name'.")
+        if sort_by not in ["first_name", "last_name", "city", "state", "zip_code"]:
+            print("Invalid sort criteria. Please choose 'first_name', 'last_name', 'city', 'state', or 'zip_code'.")
             return
         
-        sorted_contacts = sorted(self.contacts.values(), key=lambda c: getattr(c, sort_by).lower())
-    
-
+        sorted_contacts = sorted(self.contacts.values(), key=lambda c: getattr(c, sort_by).lower() if isinstance(getattr(c, sort_by), str) else getattr(c, sort_by))
+        
         if not sorted_contacts:
             print("No contacts in address book.")
         else:
@@ -237,7 +236,7 @@ def main_menu():
                     print("2. Display All Contacts")
                     print("3. Edit Contact")
                     print("4. Delete Contact")
-                    print("5. Sort Contacts by Name")
+                    print("5. Sort Contacts")
                     print("6. Return to Main Menu")
                     sub_choice = input("Enter your choice: ")
 
@@ -276,8 +275,8 @@ def main_menu():
                         address_book.delete_contact(first_name)
                     
                     elif sub_choice == '5':
-                        sort_by = input("Sort by 'first_name' or 'last_name'? ").strip()
-                        address_book.sort_contacts_by_name(sort_by)
+                        sort_by = input("Sort by 'first_name', 'last_name', 'city', 'state', or 'zip_code'? ").strip()
+                        address_book.sort_contacts(sort_by)
 
                     elif sub_choice == '6':
                         break
@@ -296,11 +295,9 @@ def main_menu():
             search_type = input("Is this 'city' or 'state'? ")  
             system.search_contact_by_city_or_state(search_term, search_type)
 
-        elif choice == '5':
-            search_term = input("Enter the city or state to get the count for: ")
-            search_type = input("Is this 'city' or 'state'? ")
-            count = system.count_contacts_by_city_or_state(search_term, search_type)
-            print(f"Number of contacts in {search_type.capitalize()} '{search_term}': {count}")
+        elif sub_choice == '5':
+            sort_by = input("Sort by 'first_name', 'last_name', 'city', 'state', or 'zip_code'? ").strip()
+            address_book.sort_contacts(sort_by)
 
         elif choice == '6':
             print("Exiting the program.")
