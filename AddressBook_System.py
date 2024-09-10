@@ -126,6 +126,7 @@ class AddressBook:
         else:
             print("Contact not found.")
 
+
 class AddressBookSystem:
     def __init__(self):
         self.address_books = {}
@@ -143,6 +144,11 @@ class AddressBookSystem:
             print(f"Address book '{name}' created successfully.")
 
     def get_address_book(self, name):
+        """
+        Definition: select a address book name in the addressbook System.
+        parameter: address_book (Adress_book) - The addressbook object .
+        Return: None
+        """
         return self.address_books.get(name)
 
     def display_all_address_books(self):
@@ -170,8 +176,17 @@ class AddressBookSystem:
                     found = True
         if not found:
             print(f"No contacts found in {search_type.capitalize()} '{search_term}' across all address books.")
-
-
+    
+    def count_contacts_by_city_or_state(self, search_term, search_type):
+        count = 0
+        for book_name, address_book in self.address_books.items():
+            for contact in address_book.contacts.values():
+                if (search_type == 'city' and contact.city.lower() == search_term.lower()) or \
+                   (search_type == 'state' and contact.state.lower() == search_term.lower()):
+                    count += 1
+        return count
+    
+    
 def main_menu():
     system = AddressBookSystem()
     while True:
@@ -181,7 +196,8 @@ def main_menu():
         print("3. Display all Address Books")
         print("4. Search Contact by City")
         print("5. Search Contact by State")
-        print("6. Exit")
+        print("6. Count Contacts by City or State")
+        print("7. Exit")
         choice = input("Enter your choice: ")
 
         if choice == '1':
@@ -255,7 +271,14 @@ def main_menu():
         elif choice == '5':
             search_term = input("Enter the state to search for: ")
             system.search_contact_by_city_or_state(search_term, 'state')
+
         elif choice == '6':
+            search_term = input("Enter the city or state to get the count for: ")
+            search_type = input("Is this 'city' or 'state'? ")
+            count = system.count_contacts_by_city_or_state(search_term, search_type)
+            print(f"Number of contacts in {search_type.capitalize()} '{search_term}': {count}")
+
+        elif choice == '7':
             print("Exiting the program.")
             break
 
