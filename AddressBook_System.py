@@ -125,6 +125,7 @@ class AddressBook:
         else:
             print("Contact not found.")
 
+
 class AddressBookSystem:
     def __init__(self):
         self.address_books = {}
@@ -142,6 +143,11 @@ class AddressBookSystem:
             print(f"Address book '{name}' created successfully.")
 
     def get_address_book(self, name):
+        """
+        Definition: select a address book name in the addressbook System.
+        parameter: address_book (Adress_book) - The addressbook object .
+        Return: None
+        """
         return self.address_books.get(name)
 
     def display_all_address_books(self):
@@ -169,8 +175,8 @@ class AddressBookSystem:
                     found = True
         if not found:
             print(f"No contacts found in {search_type.capitalize()} '{search_term}' across all address books.")
-
-
+    
+    
 def main_menu():
     system = AddressBookSystem()
     while True:
@@ -254,6 +260,7 @@ def main_menu():
         elif choice == '5':
             search_term = input("Enter the state to search for: ")
             system.search_contact_by_city_or_state(search_term, 'state')
+
         elif choice == '6':
             print("Exiting the program.")
             break
