@@ -5,7 +5,6 @@
     @Last Modified by: V Sanjay Kumar
     @Last Modified: 08-09-2024
     @Title : UC-13 save the contacts in text file.
-
 '''
 import os
 
