@@ -4,9 +4,12 @@
     @Date: 08-09-2024
     @Last Modified by: V Sanjay Kumar
     @Last Modified: 08-09-2024
-    @Title : UC-12 Ability to sort by the name,city,state,zipcode in AddressBook.
+    @Title : UC-1 Ability to sort by the name,city,state,zipcode in AddressBook.
 
 '''
+import os
+
+
 class Contact:
     # Represents a contact in the address book.
     def __init__(self, first_name, last_name, address, city, state, zip_code, phone_number, email):
@@ -20,11 +23,6 @@ class Contact:
         self.email = email
 
     def display_contact(self):
-        """
-        Definition: Display the details
-        parameter: None
-        Return: Returns a formatted string of the contact's details.
-        """
         return (f"Name: {self.first_name} {self.last_name}\n"
                 f"Address: {self.address}\n"
                 f"City: {self.city}\n"
@@ -33,11 +31,21 @@ class Contact:
                 f"Phone Number: {self.phone_number}\n"
                 f"Email: {self.email}\n")
 
+    def to_txt(self):
+        """Convert contact details to text format for storing in a file"""
+        return f"{self.first_name},{self.last_name},{self.address},{self.city},{self.state},{self.zip_code},{self.phone_number},{self.email}"
+
+    @staticmethod
+    def from_txt(line):
+        """Create a contact from a text line"""
+        fields = line.strip().split(',')
+        return Contact(*fields)
+
 def check_integer_input(prompt):
     """
-        Definition: Prompts the user for an integer input 
-        parameter: None
-        Return: returns the integer value.
+    Definition: Prompts the user for an integer input.
+    parameter: None   bmj
+    Return: Returns the integer value.
     """
     while True:
         try:
@@ -45,33 +53,42 @@ def check_integer_input(prompt):
         except ValueError:
             print("Invalid input. Please enter a valid integer.")
 
+
+
 class AddressBook:
     def __init__(self, name):
         self.name = name
         self.contacts = {}
+        self.file_name = f"{name}.txt"
+        self.load_contacts()
+
+    def load_contacts(self):
+        """Load contacts from a file (CSV format)"""
+        if os.path.exists(self.file_name):
+            with open(self.file_name, 'r') as file:
+                for line in file:
+                    contact = Contact.from_txt(line)
+                    self.contacts[contact.first_name] = contact
+            print(f"Loaded contacts from {self.file_name}.")
+        else:
+            print(f"No existing address book found for '{self.name}'. Starting a new one.")
+
+    def save_contacts(self):
+        """Save contacts to a file (txt format)"""
+        with open(self.file_name, 'w') as file:
+            for contact in self.contacts.values():
+                file.write(contact.to_txt() + '\n')
+        print(f"Contacts saved to {self.file_name}.")
 
     def add_or_update_contact(self, contact):
-        """
-        Definition: Adds or updates a contact in the address book.
-        If the contact with the given first name exists, update the contact details. Otherwise, add a new contact.
-        parameter: contact (Contact) - The contact object with details.
-        Return: None
-        """
         if contact.first_name in self.contacts:
             print(f"Contact with first name '{contact.first_name}' already exists. Updating contact.")
         else:
             print(f"Adding new contact for '{contact.first_name}'.")
-
         self.contacts[contact.first_name] = contact
-        print("Contact saved successfully.")
-
+        self.save_contacts()
 
     def display_all_contacts(self):
-        """
-        Definition: Displays all contacts in the address book.
-        parameter: None
-        Return: None
-        """
         if not self.contacts:
             print("No contacts in address book.")
         else:
@@ -88,28 +105,33 @@ class AddressBook:
         """
         if first_name in self.contacts:
             contact = self.contacts[first_name]
-            print("Enter new details (leave blank to keep current value):")
+            print("Enter new details (leave blank to keep current value)")
             print("which details Do you want to update(first_name,last_name,address,city,state,zip_code,phone_number,email):")
-            choice =input()
-            match choice:
-                case "first_name":
-                    contact.first_name = input(f"First Name [{contact.first_name}]: ") or contact.first_name
-                case "last_name":
-                    contact.last_name = input(f"Last Name [{contact.last_name}]: ") or contact.last_name
-                case "address":
-                    contact.address = input(f"Address [{contact.address}]: ") or contact.address
-                case "city":
-                    contact.city = input(f"City [{contact.city}]: ") or contact.city
-                case "state":
-                    contact.state = input(f"State [{contact.state}]: ") or contact.state
-                case "zip_code":
-                    contact.zip_code = check_integer_input(f"ZIP Code [{contact.zip_code}]: ") or contact.zip_code
-                case "phone number":
-                    contact.phone_number = check_integer_input(f"Phone Number [{contact.phone_number}]: ") or contact.phone_number
-                case "email":
-                    contact.email = input(f"Email [{contact.email}]: ") or contact.email
-                case default:
-                    print("invalid choice")
+            while True:
+                choice =input().lower()
+                match choice:
+                    case "first_name":
+                        contact.first_name = input(f"First Name [{contact.first_name}]: ") or contact.first_name
+                    case "last_name":
+                        contact.last_name = input(f"Last Name [{contact.last_name}]: ") or contact.last_name
+                    case "address":
+                        contact.address = input(f"Address [{contact.address}]: ") or contact.address
+                    case "city":
+                        contact.city = input(f"City [{contact.city}]: ") or contact.city
+                    case "state":
+                        contact.state = input(f"State [{contact.state}]: ") or contact.state
+                    case "zip_code":
+                        contact.zip_code = check_integer_input(f"ZIP Code [{contact.zip_code}]: ") or contact.zip_code
+                    case "phone_number":
+                        contact.phone_number = check_integer_input(f"Phone Number [{contact.phone_number}]: ") or contact.phone_number
+                    case "email":
+                        contact.email = input(f"Email [{contact.email}]: ") or contact.email
+                    case "exit" :
+                        break
+                    case default:
+                        print("invalid choice")
+                print("which details Do you want to update(first_name,last_name,address,city,state,zip_code,phone_number,email):")
+                print("  a exit if you want exit")    
             print("Contact updated successfully.")
         else:
             print("Contact not found.")
