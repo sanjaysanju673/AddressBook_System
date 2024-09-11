@@ -4,7 +4,7 @@
     @Date: 08-09-2024
     @Last Modified by: V Sanjay Kumar
     @Last Modified: 08-09-2024
-    @Title : UC-13 save the contacts in text file.
+    @Title : UC-13 save the contacts in csv file.
 '''
 import os
 
@@ -30,20 +30,20 @@ class Contact:
                 f"Phone Number: {self.phone_number}\n"
                 f"Email: {self.email}\n")
 
-    def to_txt(self):
+    def to_csv(self):
         """Convert contact details to text format for storing in a file"""
         return f"{self.first_name},{self.last_name},{self.address},{self.city},{self.state},{self.zip_code},{self.phone_number},{self.email}"
 
     @staticmethod
-    def from_txt(line):
-        """Create a contact from a text line"""
+    def from_csv(line):
+        """Create a contact from a csv line"""
         fields = line.strip().split(',')
         return Contact(*fields)
 
 def check_integer_input(prompt):
     """
     Definition: Prompts the user for an integer input.
-    parameter: None   bmj
+    parameter: None   
     Return: Returns the integer value.
     """
     while True:
@@ -58,11 +58,11 @@ class AddressBook:
     def __init__(self, name):
         self.name = name
         self.contacts = {}
-        self.file_name = f"{name}.txt"
+        self.file_name = f"{name}.csv"
         self.load_contacts()
 
     def load_contacts(self):
-        """Load contacts from a file (CSV format)"""
+        """Load contacts from a file (csv format)"""
         if os.path.exists(self.file_name):
             with open(self.file_name, 'r') as file:
                 for line in file:
@@ -73,10 +73,10 @@ class AddressBook:
             print(f"No existing address book found for '{self.name}'. Starting a new one.")
 
     def save_contacts(self):
-        """Save contacts to a file (txt format)"""
+        """Save contacts to a file (csv format)"""
         with open(self.file_name, 'w') as file:
             for contact in self.contacts.values():
-                file.write(contact.to_txt() + '\n')
+                file.write(contact.to_csv() + '\n')
         print(f"Contacts saved to {self.file_name}.")
 
     def add_or_update_contact(self, contact):
@@ -95,7 +95,7 @@ class AddressBook:
                 print('-'*30)
                 print(contact.display_contact())
           
-                
+
     def edit_contact(self, first_name):
         """
         Definition: Edits an existing contact in the address book.
@@ -130,7 +130,7 @@ class AddressBook:
                     case default:
                         print("invalid choice")
                 print("which details Do you want to update(first_name,last_name,address,city,state,zip_code,phone_number,email):")
-                print("  a exit if you want exit")    
+                print("Enter a exit if you want exit")    
             print("Contact updated successfully.")
         else:
             print("Contact not found.")
