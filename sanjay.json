@@ -1,0 +1,22 @@
+[
+    {
+        "first_name": "tarun",
+        "last_name": "kumar",
+        "address": "vadde",
+        "city": "knl",
+        "state": "ap",
+        "zip_code": 2345,
+        "phone_number": "23456787654321",
+        "email": "sann@kwdkd.com"
+    },
+    {
+        "first_name": "raju",
+        "last_name": "vadde",
+        "address": "5/6789",
+        "city": "knl",
+        "state": "ap",
+        "zip_code": 34543,
+        "phone_number": "8974324567",
+        "email": "sanjuvadde@123.com"
+    }
+]
